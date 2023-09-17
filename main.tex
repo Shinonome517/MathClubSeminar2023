@@ -1,19 +1,295 @@
-\documentclass{classes/report}
+\documentclass{classes/myclass}
+
+
+\title{情報源符号化定理}
+\author{情報計算科学科4年6320091 溝口稜太}
+\date{2023年6月4日}
 
 \begin{document}
+\maketitle
 
-\subfile{sections/title}
-\newpage
+\section{エントロピーの定義と数学的な準備}
 
-\tableofcontents
-\clearpage
+エントロピー（自己情報量）の定義と性質を復習する．また，情報源符号化定理を示すにあたり必要となる数学の準備を行う．
 
-\subfile{sections/abstract}
-\newpage
+\begin{dfn}[エントロピー（自己情報量）]\label{dfn:entropy}
+$\mathcal{X}$を有限アルファベットを要素に持つ有限集合とする．
+$X$は$\mathcal{X}$値離散確率変数であり，確率関数が$p(x)$である分布に従うとする．
 
-\subfile{sections/main_issue}
-\newpage
+\[
+  H(X) \coloneq E[-\log p(X)] = -\sum_{x \in \mathcal{X}}p(x) \log p(x)
+\]
 
-\subfile{sections/references}
+で定義される$H(X)$を\textbf{エントロピー（自己情報量）}という．
+ただし，連続性の議論から$0 \log 0 = 0$とする．
+\end{dfn}
 
+%これは，情報量（あいまいさ）が満たしているべき性質（公理系）から数学的操作を以って導かれる．
+
+圧縮の最大レートを考える上で，エントロピーの最大値を考えておくのは重要である．
+
+\begin{thm}[エントロピーの最大値]
+一様分布が最大エントロピーを与える．即ち，\ref{dfn:entropy}と同様の設定のもとで，
+\[
+  H(X) \leq \log |\mathcal{X}|
+\]
+\end{thm}
+
+\begin{proof}
+  $\mathcal{X}$は有限集合であるから，$|\mathcal{X}| = n \lparen \in \mathbb{N} \rparen$ とおくと，
+\begin{align*}
+  \log n - H(X) &= -\sum_{i = 1}^{n} p(x_i) \log \frac{1}{n} + \sum_{i = 1}^{n} p(x_i) \log p(x_i) \\
+  &= -\sum_{i = 1}^n p(x_i) \log \frac{\frac{1}{n}}{p(x_i)} \\
+  &\geq - \log \sum_{i = 1}^n p(x_i) \frac{\frac{1}{n}}{p(x_i)} \quad \because \text{Jensen's ineq}\\
+  &= 0
+\end{align*}
+\end{proof}
+
+これは，相対エントロピーの正値性\footnote{情報理論の基礎と広がり, Thomas M. Cover他, 2012 共立出版 p21参照  }からも導かれる．
+
+続いて，確率変数の収束概念を確認する．
+
+\begin{dfn}[概収束]
+$\lparen X_n \rparen_{n = 1, 2...}$は実数値確率変数列とし，$X$は実数値確率変数とする．
+\[
+    X_n \rightarrow X \ \mathrm{a.s.} \xLeftrightarrow[]{def} P \left \lparen \lim_{n \to \infty} X_n = X \right \rparen = 1
+\]
+\end{dfn}
+
+\begin{dfn}[確率収束]
+$\lparen X_n \rparen_{n = 1, 2...}$は実数値確率変数列とし，$X$は実数値確率変数とする．
+\[
+  X_n \rightarrow X \ (\mathrm{in \ pr.}) \xLeftrightarrow[]{def} \forall \varepsilon > 0, \  \lim_{n \to \infty} P \left \lparen |X_n - X| > \varepsilon \right \rparen = 0
+\]
+\end{dfn}
+
+確率変数列が概収束するならば確率収束するが，その逆は成立しない．
+最後に，確率収束が与える重要な定理を説明する．
+
+\begin{thm}[大数の弱法則]
+$\lparen X_n \rparen_{n = 1, 2...}$は実数値確率変数列で$\mathrm{i.i.d}$とし，期待値$EX_1 = m$と分散$\mathrm{Var}(X_1) = \sigma^2$が有限であるとする．
+この時，標本平均$\frac{1}{n}\sum_{k = 1}^{n}X_k - m$は，期待値$m$に確率収束する．即ち，
+
+\[
+  \forall \varepsilon > 0, \ \lim_{n \to \infty}P\left \lbrace \left|\frac{1}{n}\sum_{k = 1}^{n}X_k - m \right | > \varepsilon \right \rbrace  = 0
+\]
+\end{thm}
+
+\begin{proof}[大数の弱法則の証明]
+$Y_n \coloneq \frac{1}{n} \sum_{k = 1}^n X_k - m$とおく，このとき，$EY_n = 0$, $\mathbf{Var}Y_n = \frac{\sigma^2}{n}$である．
+
+以下，任意に$\varepsilon > 0$を固定して，
+
+\begin{align*}
+  P(|Y_n| > \varepsilon) &\leq \frac{E|Y_n|^2}{\varepsilon^2} \quad \because \text{Chebyshev's ineq} \\
+  &= \frac{\sigma^2}{n\varepsilon} \\
+  &\rightarrow 0 \quad (n \to \infty)
+\end{align*}
+\end{proof}
+
+大数の法則により期待値の解釈が可能になる．即ち，分布の期待値は（標本）平均の極限であることがわかる．なお，$\lparen X_n \rparen_{n = 1, 2...} : \mathrm{i.i.d.}$ならば，分散は有限でなくてもよい．\footnote{確率論, 伊藤浩二, 2002, 朝倉書店, p107参照}
+
+\section{AEPと典系列}
+
+情報理論における大数の弱法則の説明をする．
+
+\begin{thm}[AEP]
+$\lparen X_n \rparen_{n = 1, 2...}$が$\mathrm{i.i.d.}$で$p(x)$に従うとする．また，この列による確率変数ベクトル$(X_1, X_2, ... X_n)$は$\tilde{p}(x_1, x_2, ..., x_n)$に従うとする．このとき，
+
+\[
+  -\frac{1}{n} \log \tilde{p}\left \lparen X_1, X_2, ..., X_n \right \rparen \rightarrow H(X) \ (\mathrm{in \ pr.})
+\]
+
+ただし，$X$は$p(x)$に従う確率変数とする．
+\end{thm}
+
+\begin{proof}
+$\lparen X_n \rparen_{n = 1, 2...}$が$\mathrm{i.i.d.}$であることから，$\tilde{p}(x_1, x_2, ..., x_n) = \prod_{i = 1}^{n}p(x_i)$である．よって
+
+\begin{align*}
+  -\frac{1}{n} \log \tilde{p}(X_1, X_2, ..., X_n) &= -\frac{1}{n} \sum_{i = i}^{n} \log p(X_i) \label{form-num:check-identicality}\\
+  &\rightarrow E[-\log p(X)] \quad (n \to \infty) \quad \because \text{大数の弱法則} \\
+  &= H(X)
+\end{align*}
+\end{proof}
+
+正確には一行目においてBorel可測関数が確率変数の独立性を保存することを示さなければならないが，ここではそれを認め証明を省略する．
+
+\begin{dfn}[典系列]
+$\mathcal{X}$を有限アルファベットを要素に持つ有限集合とする．
+$\lparen X_n \rparen_{n = 1, 2...}$が$\mathrm{i.i.d.}$で$p(x)$に従うとする．また，この列による確率変数ベクトル$(X_1, X_2, ... X_n)$は$\tilde{p}(x_1, x_2, ..., x_n)$に従うとする．
+
+$n \in \mathbb{N}$とし，シンボル列$(x_1, x_2,... x_n) \in \mathcal{X}$を考える．これが，以下の条件を満たすとき，\textbf{分布$p(x)$に関する典型集合(typical set)}といい,$A_{\varepsilon}^{\lparen n \rparen}$とかく．
+
+\[
+  \forall \varepsilon > 0, \  2^{-n(H(X) + \varepsilon)} \leq \tilde{p}(x_1, x_2, ..., x_n) \leq  2^{-n(H(X) - \varepsilon)}
+\]
+ただし，$X$は$\mathcal{X}$値離散確率変数であり，確率関数が$p(x)$である分布に従うとする．
+\end{dfn}
+
+なんらかの分布に従う情報源から独立にシンボルを取り出し続けると，最終的に典系列ばかりになる．
+そこで，典系列の性質を確認する．この性質は情報源符号化定理を証明する際に重要な役割を果たす．
+
+\begin{thm}[典系列の性質]
+以下，$\varepsilon > 0$は任意にとる．
+\begin{enumerate}
+  \item $H(X) - \varepsilon \leq -\frac{1}{n} \log \tilde{p}(x_1, x_2, ..., x_n) \leq H(X) + \varepsilon$ \label{property:typical-set1}
+  \item 十分大きな$n$に対し，$P\lparen (X_1, X_2, ... X_n) \in A_{\varepsilon}^{(n)} \rparen > 1 - \varepsilon$ \label{property:typical-set2}
+  \item $|A_{\varepsilon}^{(n)}| \leq 2^{n(H(X) + \varepsilon)}$ \label{property:typical-set3}
+  \item 十分大きな$n$に対し，$|A_{\varepsilon}^{(n)}| \geq (1 - \varepsilon)2^{-n(H(X) - \varepsilon)}$ \label{property:typical-set4}
+\end{enumerate}
+\end{thm}
+
+\begin{proof}
+\ref{property:typical-set1}に関しては，定義より自明である．辺々対数をとり整理すればよい．
+
+\ref{property:typical-set2}について,
+\[
+  P\lparen (X_1, X_2, ... X_n) \in A_{\varepsilon}^{(n)} \rparen = P \left \lparen \left | -\frac{1}{n} \log \tilde{p}(X_1, X_2, ..., X_n) - H(X) \right | \leq \varepsilon \right \rparen  \quad \because \text{典系列の定義} \\
+\]
+ここでAEPより，任意の$\delta > 0$に対し，十分大きな$n$において，
+\[
+  P \left \lparen \left | -\frac{1}{n} \log \tilde{p}(X_1, X_2, ..., X_n) - H(X) \right | \leq \varepsilon \right \rparen > 1 - \delta
+\]
+$\varepsilon, \delta$任意より，より小さい$\varepsilon$と既存の$\delta$に対して$n$をさらに大きく取り直して，
+\[
+  P \left \lparen \left | -\frac{1}{n} \log \tilde{p}(X_1, X_2, ..., X_n) - H(X) \right | < \varepsilon \right \rparen > 1 - \delta
+\]
+$\varepsilon = \delta$とすれば，示すべきを得る．
+\end{proof}
+
+以下$x^n \coloneq (x_1, x_2, ... x_n)$と略記する．\ref{property:typical-set3}に関して，
+\begin{align*}
+  1 &= \sum_{x^n \in \mathcal{X}^n} \tilde{p}(x^n) \\
+    &\geq \sum_{x^n \in A_{\varepsilon}^{(n)}} \tilde{p}(x^n)  \\
+    &\geq \sum_{x^n \in A_{\varepsilon}^{(n)}} 2^{-n(H(X) + \varepsilon)} \quad \because \text{典系列の定義} \\
+    &= |A_{\varepsilon}^{(n)}| 2^{-n(H(X) + \varepsilon)}
+\end{align*}
+これより，
+\[
+  |A_{\varepsilon}^{(n)}| \leq 2^{n(H(X) + \varepsilon)}
+\]
+
+最後\ref{property:typical-set4}について，\ref{property:typical-set2}より，十分大きな$n$に対して，
+\begin{align*}
+  1 - \varepsilon 
+  &< P\lparen (X_1, X_2, ... X_n) \in A_{\varepsilon}^{(n)} \rparen \\
+  &= \sum_{x^n \in A_{\varepsilon}^{(n)}} \tilde{p}(x^n) \\
+  &\leq \sum_{x^n \in A_{\varepsilon}^{(n)}} 2^{-n(H(X) - \varepsilon)} \quad \because \text{典系列の定義} \\
+  &= |A_{\varepsilon}^{(n)}| 2^{-n(H(X) - \varepsilon)}
+\end{align*}
+これより，
+\[
+  |A_{\varepsilon}^{(n)}| \geq (1 - \varepsilon)2^{n(H(X) - \varepsilon)}
+\]
+を得る．
+
+\section{情報源符号化定理}
+
+情報源のデータ圧縮の限界を与える\textbf{情報源符号化定理}を示す．
+
+\begin{thm}
+$\mathcal{X}$を有限アルファベットを要素に持つ有限集合とする．
+$\lparen X_n \rparen_{n = 1, 2...}$が$\mathrm{i.i.d.}$で$p(x)$に従うとする．また，この列による確率変数ベクトル$(X_1, X_2, ... X_n)$は$\tilde{p}(x_1, x_2, ..., x_n)$に従うとする．
+
+$n \in \mathbb{N}$とし，シンボル列を$x^n \coloneq (x_1, x_2,..., x_n) \in \mathcal{X}^n$とする．このとき，以下を満たすような一対一の写像$\mathcal{X}^n \rightarrow \lbrace 0, 1 \rbrace^n$が存在する．
+\[
+  \forall \varepsilon > 0, \ \mathrm{E}\left \lbrack \frac{1}{n} l(X^n) \right \rbrack \leq H(X) + \varepsilon
+\]
+
+ただし，$l: \mathcal{X}^n \rightarrow \mathbb{N}$は符号語の語長を与える関数であり，$X$は$p(x)$に従う確率変数とする．
+
+\end{thm}
+
+\begin{proof}
+以下のような符号化を考える．
+\begin{itemize}
+  \item $A_{\varepsilon}^{(n)}$:"$0$"$+$"辞書順の2進数列"で，番号付けをする．
+  \item $(A_{\varepsilon}^{(n)})^{c}$:"$1$"$+$"辞書順の2進数列"で，番号付けをする．
+\end{itemize}
+前者は，\ref{property:typical-set3}より$n(H(X) + \varepsilon) + 2$bit以下の符号語となる.また，後者は$|(A_{\varepsilon}^{(n)})^{c}| \leq |\mathcal{X}^n| \leq |\mathcal{X}|^n = 2^{\log |\mathcal{X}|^n}$より$n \log |\mathcal{X}| + 2$bit以下の符号語となる．（余分な2bitのうち1bitは必要桁数の切り上げ分であり，もう1bitは 
+先頭のフラグである．）
+
+以下，任意に$\varepsilon > 0$を固定し，$P\lparen X^n \in A_{\varepsilon}^{(n)} \rparen > 1 - \varepsilon$を満たすほど十分に大きな$n$に対して，
+
+\begin{align*}
+\mathrm{E}\left \lbrack \frac{1}{n} l(X^n) \right \rbrack  &= \sum_{x^n \in \mathcal{X}^n} \tilde{p}(x^n)l(x^n) \\
+&= \frac{1}{n} \sum_{x^n \in A_{\varepsilon}^{(n)}} \tilde{p}(x^n)l(x^n) + \sum_{x^n \in (A_{\varepsilon}^{(n)})^c} \tilde{p}(x^n)l(x^n) \\
+&\leq \frac{1}{n} \left \lparen \sum_{x^n \in A_{\varepsilon}^{(n)}} \tilde{p}(x^n) (n(H(X) + \varepsilon) + 2) + \sum_{x^n \in (A_{\varepsilon}^{(n)})^c} \tilde{p}(x^n) (n \log |\mathcal{X}| + 2) \right \rparen \\
+&= \frac{1}{n} \left \lparen P\lparen X^n \in A_{\varepsilon}^{(n)} \rparen  (n(H(X) + \varepsilon) + 2) + P\lparen X^n \in (A_{\varepsilon}^{(n)})^c \rparen (n \log |\mathcal{X}| + 2) \right \rparen \\
+&\leq \frac{1}{n} \left \lparen 1 \cdot (n(H(X) + \varepsilon) + 2) + \varepsilon (n \log |\mathcal{X}| + 2) \right \rparen \quad \because \text{\ref{property:typical-set2}}  \\
+&= \left \lparen H(X) + \left \lparen \varepsilon + \frac{2}{n} + \varepsilon \log |\mathcal{X}| + \frac{2\varepsilon}{n} \right \rparen \right \rparen \\
+&= (H(X) + \varepsilon^{\prime}) \quad \left \lparen \varepsilon^{\prime} \coloneq \left \lparen \varepsilon + \frac{2}{n} + \varepsilon \log |\mathcal{X}| + \frac{2\varepsilon}{n} \right \rparen \text{とした} \right \rparen
+\end{align*}
+ここで，$\varepsilon^{\prime}$は，$\varepsilon$を任意に小さく取ったのちに，十分大きな$n$を取ることで，いくらでも小さくすることができる．よって題意は示された．
+\end{proof}
+
+\section{補足}
+
+本論との関係性が薄い定理等の証明を与える．この節では，$(\Omega, \mathcal{F}, P$を確率空間,$\lparen X_n \rparen_{n = 1, 2,...}$を実数値確率変数とする．
+
+\begin{thm}[Chebyshevの不等式（Markovの不等式）]
+任意の実数$p \geq 1$に対して，
+
+\[
+  \forall \varepsilon > 0, \  P(|X_n| \ge \varepsilon) \leq \frac{E[{|X_n|^p}]}{\varepsilon^p}
+\]
+\end{thm}
+
+\begin{proof}
+ $\varepsilon > 0$を任意に固定する．この時，$p = 1$について示せば十分である．というのも，$p = 1$にて，$\varepsilon \rightarrow \varepsilon^p$, $|X_n| \rightarrow |X_n|^p$としたときに，
+\[
+   P(|X_n| \ge \varepsilon) =  P(|X_n|^p \ge \varepsilon^p)
+\]
+から，任意の実数$p \geq 1$に対して直ちに従うからである．さて，$p = 1$の場合については，
+
+\begin{align*}
+  \varepsilon P(|X_n| > \varepsilon) &= \varepsilon E[\mathbb{1}_{\lbrace |X_n| > \varepsilon \rbrace }] \\
+  &\leq E[|X_n| \cdot \mathbb{1}_{\lbrace |X_n| > \varepsilon \rbrace}] \\
+  &\leq E[|X_n|]
+\end{align*}
+
+より成立．
+\end{proof}
+
+\begin{thm}[Jensenの不等式]
+関数$f: \mathrm{R} \to \mathrm{R}$が凸(convex)であるとする．即ち，
+\[
+  \forall \lambda \in \lparen 0, 1 \rparen, \  f(\lambda x + (1 - \lambda)y) \leq \lambda f(x) + (1 - \lambda ) f(y)
+\]
+である．ここで，実数値確率変数$X$に対し，$E|X| < \infty$, $E|f(X)| < \infty$が成立するとき，
+
+\[
+  f \left \lparen E X \right \rparen \leq E f(X)
+\]
+\end{thm}
+
+\begin{proof}
+$f$は凸関数であるから，任意の$a \in \mathbb{R}$に対し，ある定数$c \in \mathbb{R}$が存在して，
+\[
+  f(x) \geq c(x - a) + f(a)
+\]
+が成立する．これは$c$として具体的に$f^{\prime}(a)$を取れば良いことから分かるように，凸関数では常に$f$の下にある接線を引くことができる．
+
+ここで，$a = E[X], x = X$として両辺期待値をとれば，
+
+\[
+  f \left \lparen E X \right \rparen \leq E f(X)
+\]
+\end{proof}
+
+
+\begin{thebibliography}{9}
+
+\bibitem{funaki}
+舟木 直久
+\newblock {\em 確率論}, ［講座］数学の考え方20
+\newblock 朝倉書店,2004
+
+\bibitem{info}
+Thomas M. Cover,他
+\newblock {\em 情報理論-基礎と広がり},
+\newblock 共立出版,2012.
+
+\end{thebibliography}
 \end{document}
