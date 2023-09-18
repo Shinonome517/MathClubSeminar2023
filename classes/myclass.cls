@@ -1,8 +1,5 @@
 \ProvidesClass{classes/myclass}[2023/09/16 classfile for math-club seminar 2023]
 \LoadClass[a4paper, 11pt, dvipdfmx]{jlreq}
-%\RequirePackage{plautopatch}
-%\documentclass[platex]{jlreq}			% for platex
-%\documentclass[uplatex,dvipdfmx]{jlreq}		% for uplatex
 
 \usepackage{amsmath}
 \usepackage{amsthm}
@@ -26,5 +23,7 @@
 \newtheorem*{conj*}{予想}
 \newtheorem*{dfn*}{定義}
 \newtheorem*{rem*}{注}
+
+\newcommand{\1}{\mbox{1}\hspace{-0.25em}\mbox{l}}
 
 \usepackage{amssymb, amsfonts, latexsym, mathtools}
