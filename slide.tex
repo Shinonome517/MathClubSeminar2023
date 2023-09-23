@@ -1,19 +1,33 @@
 \documentclass{classes/myslide}
+
+\title{情報源符号化定理を示そう}
+\author{溝口稜太}
+\institute{創域理工学部情報計算科学科４年}
+\date{September 24, 2023}
+
 \begin{document}
 
 \section{情報源符号化定理を示そう！！}
 
-\begin{frame}\frametitle{イントロダクション}
+\begin{frame}
+  \titlepage
+\end{frame}
 
-  情報源符号化定理→"圧縮の限界"を示す定理
+\begin{frame}\frametitle{イントロダクション（圧縮の例）}
+
+  「情報源符号化定理」→"圧縮の限界"を示す定理
 
   \begin{exampleblock}{圧縮の例}
     \begin{align*}
       &000100000110000 \\
-      &\xrightarrow[圧縮]{} 03 \ 11 \ 05 \ 12 \ 04 \\
-      &\xrightarrow[解凍]{} 000100000110000 
+      \xrightarrow[圧縮]{} & 03 \ 11 \ 05 \ 12 \ 04 \\
+      \xrightarrow[解凍]{} & 000100000110000 
     \end{align*}
   \end{exampleblock}
+
+  \begin{alertblock}{気づくこと}
+    出現頻度の偏りが大きければ、より圧縮ができそう
+  \end{alertblock}
 
 \end{frame}
 
