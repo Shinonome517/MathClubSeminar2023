@@ -1,5 +1,5 @@
 \ProvidesClass{classes/myclass}[2023/09/16 classfile for math-club seminar 2023]
-\LoadClass[a4paper, 11pt, dvipdfmx]{jlreq}
+\LoadClass[a4paper, 11pt]{jlreq}
 
 \usepackage{amsmath}
 \usepackage{amsthm}

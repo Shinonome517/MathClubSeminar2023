@@ -1,0 +1,85 @@
+\documentclass{classes/myslide}
+
+\title{情報源符号化定理を示そう}
+\author{溝口稜太}
+\institute{創域理工学部情報計算科学科４年}
+\date{September 24, 2023}
+
+\begin{document}
+
+\section{情報源符号化定理を示そう！！}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}\frametitle{イントロダクション（圧縮の例）}
+
+  「情報源符号化定理」→"圧縮の限界"を示す定理
+
+  \begin{exampleblock}{圧縮の例}
+    \begin{align*}
+      &000100000110000 \\
+      \xrightarrow[圧縮]{} & 03 \ 11 \ 05 \ 12 \ 04 \\
+      \xrightarrow[復元]{} & 000100000110000 
+    \end{align*}
+  \end{exampleblock}
+
+  \begin{alertblock}{気づくこと}
+    出現頻度の偏りが大きければ、より圧縮ができそう
+  \end{alertblock}
+
+\end{frame}
+
+\begin{frame}\frametitle{数学的準備（圧縮のモデル）}
+  「文字の生成」のモデルに必要な数学的定義を行う
+  \begin{definition}[]
+    $\mathcal{X}$：情報源 \ （有限集合）\\
+    $X$：$\mathcal{X}$値離散確率変数 \ （可測写像：$\mathrm{prob. sp.} \rightarrow \mathcal{X}$）\\
+    $x$：シンボル, $X$の実現値 \ （$ x \in \mathcal{X}$） \\
+    $p(x)$：$X$の確率関数 \ （$p(x) \coloneq P(X = x)$）
+  \end{definition}
+\end{frame}
+
+\begin{frame}\frametitle{数学的準備（圧縮のモデル）}
+  「文字列の生成と圧縮・復元」のモデルに必要な数学的定義を行う
+  \begin{definition}[]
+    $n, m$：シンボル列長,ビット列長 \ （$n, m \in \mathbb{N}$）\\
+    $\mathcal{X}^n$：拡大情報源 \ （$\mathcal{X}$の$n$個の直積）\\
+    $(X_1, X_2, ..., X_n)$：$\mathcal{X}^n$値離散確率変数 \ （$\mathcal{X}^n$値確率変数の列）\\
+    $(x_1, x_2, ..., x_n )$：シンボル列, $(X_1, X_2, ..., X_n)$の実現値 \ （$ x \in \mathcal{X}$の列）\\
+    $\tilde{p}(x_1, x_2, ..., x_n )$：$(X_1, X_2, ..., X_n)$の確率関数 \\（$\tilde{p}(x_1, x_2, ..., x_n ) \coloneq P(X_1 = x_1, X_2 = x_2,... X_n = x_n)$）
+  \end{definition}
+\end{frame}
+
+\begin{frame}\frametitle{数学的準備（圧縮のモデル）}
+  続き
+  \begin{definition}[]
+    $\{0, 1\}^n$：符号源 \\
+    $(y_1, y_2,... y_n)$：ビット列 \ （$y \in \{0, 1\}$の列）\\
+    $C(x_1, x_2, ..., x_n )$：符号化関数 \ （関数：$\mathcal{X}^n \rightarrow \{0, 1\}^n$）\\
+    $l(y_1, y_2, ..., y_m )$：符号語長関数 \ （関数：$\{0, 1\}^n \rightarrow \mathbb{N}$） \\
+    $D(y_1, y_2, ..., y_m )$：復号化関数  \ （関数：$\{0, 1\}^n \rightarrow \mathcal{X}^n$） \\
+    $R$：圧縮率 \ （$R \coloneq E[\frac{1}{n}l(C((X_1, X_2, ..., X_n)))] \in [0, 1]$）
+  \end{definition}
+\end{frame}
+
+\begin{frame}\frametitle{数学的準備（圧縮のモデル）}
+  "適切な圧縮"を定義する
+  \begin{definition}[]
+    符号化関数$C$が以下を満たすとき
+    \begin{multline*}
+      \forall n \in \mathbb{N}, \forall (x_1, x_2, ..., x_n ) \in \mathrm{X}^n, \exists D \\ D(C(x_1, x_2, ..., x_n )) = (x_1, x_2, ..., x_n )
+    \end{multline*}
+    この$C$による圧縮を可逆な圧縮という
+  \end{definition}
+  \begin{alertblock}{考えたいこと}
+    可逆な圧縮の最大効率
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}\frametitle{数学的準備（エントロピー）}
+  aaaa
+\end{frame}
+
+\end{document}

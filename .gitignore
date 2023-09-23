@@ -28,6 +28,8 @@
 *.bcf
 *.xml
 *.pdf
+*.nav
+*.snm
 !figures/*.pdf
 
 # Ignore node_modules
