@@ -15,6 +15,7 @@ env:
   USE_DOCKER: no
   # 生成するファイルの名前。
   ARTIFACT_NAME: main.pdf
+  SLIDE_NAME: slide.pdf
 
 # 実行されるジョブの定義
 jobs:
@@ -32,6 +33,9 @@ jobs:
       - name: Build
         run: sh ./bin/build.sh
 
+      - name: BuildSlide
+        run: sh ./bin/build_slide.sh
+
       # 生成したPDFをGitHub Actionsにアップロードする
       - name: Upload artifact
         uses: actions/upload-artifact@v3
@@ -39,6 +43,9 @@ jobs:
           name: pdf
           # アップロードするファイルを変更する場合、以下を変える
           path: ./${{ env.ARTIFACT_NAME }}
+        with:
+          name: slide
+          path: ./${{ env.SLIDE_NAME  }}
 
   # GitHubのReleaseを作成するジョブ
   # v1.0.0のようなタグがpushされた時のみ実行
@@ -56,6 +63,11 @@ jobs:
         with:
           name: pdf
 
+      - name: Download slide
+        uses: actions/download-artifact@v3
+        with:
+          name: slide
+
       # Releaseを作成する
       # https://github.com/YOURNAME/YOURREPO/releases に 'Release タグ名' で作成
       - name: Create release
@@ -63,4 +75,4 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           VERSION=$(echo ${{ github.ref }} | sed -e "s#refs/tags/##g")
-          gh release create ${VERSION} -t "${VERSION}" ./${{ env.ARTIFACT_NAME }}
+          gh release create ${VERSION} -t "${VERSION}" ./${{ env.ARTIFACT_NAME }} ./${{ env.SLIDE_NAME  }}
