@@ -120,7 +120,8 @@ $\lparen X_n \rparen_{n = 1, 2...}$が$\mathrm{i.i.d.}$であることから，$
 $\mathcal{X}$を有限アルファベットを要素に持つ有限集合とする．
 $\lparen X_n \rparen_{n = 1, 2...}$が$\mathrm{i.i.d.}$で$p(x)$に従うとする．また，この列による確率変数ベクトル$(X_1, X_2, ... X_n)$は$\tilde{p}(x_1, x_2, ..., x_n)$に従うとする．
 
-$n \in \mathbb{N}$とし，シンボル列$(x_1, x_2,... x_n) \in \mathcal{X}$を考える．これが，以下の条件を満たすとき，\textbf{分布$\tilde{p}(x)$に関する典型集合(typical set)}といい,$A_{\varepsilon}^{\lparen n \rparen}$とかく．
+$n \in \mathbb{N}$とし，シンボル列$(x_1, x_2,... x_n) \in \mathcal{X}$を考える．これが，以下の条件を満たすとき，これを\textbf{分布$\tilde{p}(x)$に関する典型列}という．
+また，その集まりを\textbf{分布$\tilde{p}(x)$に関する典型列}といい$A_{\varepsilon}^{\lparen n \rparen}$とかく．
 
 \[
   \forall \varepsilon > 0, \  2^{-n(H(X) + \varepsilon)} \leq \tilde{p}(x_1, x_2, ..., x_n) \leq  2^{-n(H(X) - \varepsilon)}
@@ -137,7 +138,7 @@ $n \in \mathbb{N}$とし，シンボル列$(x_1, x_2,... x_n) \in \mathcal{X}$�
   \item $H(X) - \varepsilon \leq -\frac{1}{n} \log \tilde{p}(x_1, x_2, ..., x_n) \leq H(X) + \varepsilon$ \label{property:typical-set1}
   \item 十分大きな$n$に対し，$P\lparen (X_1, X_2, ... X_n) \in A_{\varepsilon}^{(n)} \rparen > 1 - \varepsilon$ \label{property:typical-set2}
   \item $|A_{\varepsilon}^{(n)}| \leq 2^{n(H(X) + \varepsilon)}$ \label{property:typical-set3}
-  \item 十分大きな$n$に対し，$|A_{\varepsilon}^{(n)}| \geq (1 - \varepsilon)2^{-n(H(X) - \varepsilon)}$ \label{property:typical-set4}
+  \item 十分大きな$n$に対し，$|A_{\varepsilon}^{(n)}| \geq (1 - \varepsilon)2^{n(H(X) - \varepsilon)}$ \label{property:typical-set4}
 \end{enumerate}
 \end{thm}
 
@@ -152,12 +153,7 @@ $n \in \mathbb{N}$とし，シンボル列$(x_1, x_2,... x_n) \in \mathcal{X}$�
 \[
   P \left \lparen \left | -\frac{1}{n} \log \tilde{p}(X_1, X_2, ..., X_n) - H(X) \right | \leq \varepsilon \right \rparen > 1 - \delta
 \]
-$\varepsilon, \delta$任意より，より小さい$\varepsilon$と既存の$\delta$に対して$n$をさらに大きく取り直して，
-\[
-  P \left \lparen \left | -\frac{1}{n} \log \tilde{p}(X_1, X_2, ..., X_n) - H(X) \right | < \varepsilon \right \rparen > 1 - \delta
-\]
 $\varepsilon = \delta$とすれば，示すべきを得る．
-\end{proof}
 
 以下$x^n \coloneq (x_1, x_2, ... x_n)$と略記する．\ref{property:typical-set3}に関して，
 \begin{align*}
@@ -184,6 +180,7 @@ $\varepsilon = \delta$とすれば，示すべきを得る．
   |A_{\varepsilon}^{(n)}| \geq (1 - \varepsilon)2^{n(H(X) - \varepsilon)}
 \]
 を得る．
+\end{proof}
 
 \section{情報源符号化定理}
 
@@ -214,7 +211,7 @@ $n \in \mathbb{N}$とし，シンボル列を$x^n \coloneq (x_1, x_2,..., x_n) \
 以下，任意に$\varepsilon > 0$を固定し，$P\lparen X^n \in A_{\varepsilon}^{(n)} \rparen > 1 - \varepsilon$を満たすほど十分に大きな$n$に対して，
 
 \begin{align*}
-\mathrm{E}\left \lbrack \frac{1}{n} l(X^n) \right \rbrack  &= \sum_{x^n \in \mathcal{X}^n} \tilde{p}(x^n)l(x^n) \\
+\mathrm{E}\left \lbrack \frac{1}{n} l(X^n) \right \rbrack  &= \frac{1}{n} l\sum_{x^n \in \mathcal{X}^n} \tilde{p}(x^n)l(x^n) \\
 &= \frac{1}{n} \sum_{x^n \in A_{\varepsilon}^{(n)}} \tilde{p}(x^n)l(x^n) + \sum_{x^n \in (A_{\varepsilon}^{(n)})^c} \tilde{p}(x^n)l(x^n) \\
 &\leq \frac{1}{n} \left \lparen \sum_{x^n \in A_{\varepsilon}^{(n)}} \tilde{p}(x^n) (n(H(X) + \varepsilon) + 2) + \sum_{x^n \in (A_{\varepsilon}^{(n)})^c} \tilde{p}(x^n) (n \log |\mathcal{X}| + 2) \right \rparen \\
 &= \frac{1}{n} \left \lparen P\lparen X^n \in A_{\varepsilon}^{(n)} \rparen  (n(H(X) + \varepsilon) + 2) + P\lparen X^n \in (A_{\varepsilon}^{(n)})^c \rparen (n \log |\mathcal{X}| + 2) \right \rparen \\
