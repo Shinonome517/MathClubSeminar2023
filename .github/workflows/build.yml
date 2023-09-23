@@ -33,9 +33,6 @@ jobs:
       - name: Build
         run: sh ./bin/build.sh
 
-      - name: BuildSlide
-        run: sh ./bin/build_slide.sh
-
       # 生成したPDFをGitHub Actionsにアップロードする
       - name: Upload artifact
         uses: actions/upload-artifact@v3
@@ -43,6 +40,12 @@ jobs:
           name: pdf
           # アップロードするファイルを変更する場合、以下を変える
           path: ./${{ env.ARTIFACT_NAME }}
+          
+      - name: BuildSlide
+        run: sh ./bin/build_slide.sh
+      
+      - name: Upload slide
+        uses: actions/upload-artifact@v3
         with:
           name: slide
           path: ./${{ env.SLIDE_NAME  }}
