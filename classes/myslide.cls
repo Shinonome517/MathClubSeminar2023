@@ -1,5 +1,5 @@
 \ProvidesClass{classes/myslide}[2023/09/22 classfile for math-club seminar 2023]
-\LoadClass[unicode, 14pt, notheorems]{beamer}
+\LoadClass[unicode, 12pt, notheorems]{beamer}
 
 %\usepackage{fancyvrb}
 %%%% 和文用 %%%%%
