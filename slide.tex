@@ -35,7 +35,7 @@
     $\mathcal{X}$：情報源 \ （有限集合）\\
     $X$：$\mathcal{X}$値離散確率変数 \ （可測写像：$\mathrm{prob. sp.} \rightarrow \mathcal{X}$）\\
     $x$：シンボル, $X$の実現値 \ （$ x \in \mathcal{X}$） \\
-    $P_X(\{x\})$：$X$の分布 \ （$(\mathcal{X}, 2^{X})$上の確率測度$P_X: \mathcal{X} \rightarrow [0, 1]$） \\
+    $P_X(\{x\})$：$X$の分布 \ （$(\mathcal{X}, 2^{\mathcal{X}})$上の確率測度$P_X: \mathcal{X} \rightarrow [0, 1]$） \\
     $p(x)$：$X$の確率関数, 分布$P_X(\{x\})$の確率関数 \ （$p(x) \coloneq P_X(\{x\})$）
   \end{definition}
 \end{frame}
@@ -47,7 +47,7 @@
     $\mathcal{X}^n$：拡大情報源 \ （$\mathcal{X}$の$n$個の直積）\\
     $(X_1, X_2, ..., X_n)$：$\mathcal{X}^n$値離散確率変数 \ （$\mathcal{X}^n$値確率変数の列）\\
     $(x_1, x_2, ..., x_n )$：シンボル列, $(X_1, X_2, ..., X_n)$の実現値  \\ \quad （$ x \in \mathcal{X}$の列）\\
-    $P_{(X_1, X_2, ..., X_n)}(\{(x_1, x_2, ..., x_n )\})$：$(X_1, X_2, ..., X_n)$の分布 \\ \quad $(\mathcal{X}^n, 2^{{X}^n})$上の確率測度$P_{(X_1, X_2, ..., X_n)}: \mathcal{X}^n \rightarrow [0, 1]$） \\
+    $P_{(X_1, X_2, ..., X_n)}(\{(x_1, x_2, ..., x_n )\})$：$(X_1, X_2, ..., X_n)$の分布 \\ \quad $(\mathcal{X}^n, 2^{{\mathcal{X}}^n})$上の確率測度$P_{(X_1, X_2, ..., X_n)}: \mathcal{X}^n \rightarrow [0, 1]$） \\
     $\tilde{p}(x_1, x_2, ..., x_n )$：$(X_1, X_2, ..., X_n)$の確率関数 \\ \quad（$\tilde{p}(x_1, x_2, ..., x_n ) \coloneq P(\{(x_1, x_2, ..., x_n )\})$）
   \end{definition}
 \end{frame}
@@ -55,11 +55,11 @@
 \begin{frame}\frametitle{数学的準備（圧縮のモデル）}
   続き
   \begin{definition}[拡大情報源など]
-    $\{0, 1\}^n$：符号源 \\
-    $(y_1, y_2,... y_n)$：ビット列 \ （$y \in \{0, 1\}$の列）\\
-    $C(x_1, x_2, ..., x_n )$：符号化関数 \ （関数：$\mathcal{X}^n \rightarrow \{0, 1\}^n$）\\
-    $l(y_1, y_2, ..., y_m )$：符号語長関数 \ （関数：$\{0, 1\}^n \rightarrow \mathbb{N}$） \\
-    $D(y_1, y_2, ..., y_m )$：復号化関数  \ （関数：$\{0, 1\}^n \rightarrow \mathcal{X}^n$） \\
+    $\{0, 1\}^m$：符号源 \\
+    $(y_1, y_2,... y_m)$：ビット列 \ （$y \in \{0, 1\}$の列）\\
+    $C(x_1, x_2, ..., x_n )$：符号化関数 \ （関数：$\mathcal{X}^n \rightarrow \bigcup_{i = 1}^n \{0, 1\}^i$）\\
+    $l(y_1, y_2, ..., y_m )$：符号語長関数 \ （関数：$\{0, 1\}^m \rightarrow \mathbb{N}$） \\
+    $D(y_1, y_2, ..., y_m )$：復号化関数  \ （関数：$\{0, 1\}^m \rightarrow \mathcal{X}^n$） \\
     $R$：圧縮率 \ （$R \coloneq E[\frac{1}{n}l(C((X_1, X_2, ..., X_n)))] \in \mathbb{R}_{\geq 0}$）
   \end{definition}
 \end{frame}
@@ -67,9 +67,9 @@
 \begin{frame}\frametitle{数学的準備（圧縮のモデル）}
   "適切な圧縮"を定義する．
   \begin{definition}[可逆な圧縮]
-    符号化関数$C$が以下を満たすとき
+    拡大情報源$|\mathcal{X}^n|$とそれに対する符号化関数$C$が以下を満たすとき
     \begin{multline*}
-      \forall n \in \mathbb{N}, \forall (x_1, x_2, ..., x_n ) \in \mathcal{X}^n, \exists D; \\ D(C(x_1, x_2, ..., x_n )) = (x_1, x_2, ..., x_n )
+      \forall (x_1, x_2, ..., x_n ) \in \mathcal{X}^n, \exists D;  D(C(x_1, x_2, ..., x_n )) = (x_1, x_2, ..., x_n )
     \end{multline*}
     この$C$による圧縮を可逆な圧縮という．
   \end{definition}
@@ -202,9 +202,10 @@
     $\mathcal{X}$：情報源； \quad  $X$：$\mathcal{X}$値離散確率変数； \quad $p(x)$：$X$の確率関数 \\
     $\mathcal{X}^n$：拡大情報源： \  $X^n$：$\mathcal{X}^n$値確率変数； \  $\tilde{p}(x^n)$：$X^n$の確率関数
 
-    $n \in \mathbb{N}$個のシンボルからなるシンボル列$x^n$を考える．これが，
+    $n \in \mathbb{N}$個のシンボルからなるシンボル列$x^n$を考える．
+    これが，任意に固定した$\varepsilon > 0$に対し，
     \[
-      \forall \varepsilon > 0, \  2^{-n(H(X) + \varepsilon)} \leq \tilde{p}(x^n) \leq  2^{-n(H(X) - \varepsilon)} 
+      2^{-n(H(X) + \varepsilon)} \leq \tilde{p}(x^n) \leq  2^{-n(H(X) - \varepsilon)} 
     \]
     を満たすとき，これを「確率関数$\tilde{p}(x^n)$に関する$\varepsilon$-典型列」という．
 
@@ -290,7 +291,7 @@
     ここでその$\varepsilon$に対する$\varepsilon$-典型集合$A_{\varepsilon}^{(n)}$を考える．
 
     $\varepsilon$-典型集合の要素数は，
-    \[ |A_{\varepsilon}^{(n)}| \leq 2^{n(H(X) + \varepsilon)}  \leq 2^{nr} \leq 2^{\lfloor nr \rfloor} + 1\]
+    \[ |A_{\varepsilon}^{(n)}| \leq 2^{n(H(X) + \varepsilon)}  \leq 2^{nr} \leq 2^{\lfloor nr \rfloor + 1}\]
     と$r$を用いて評価できる．さらに，十分大きな$n$に対して，
     \[ P_{X^n}(A_{\varepsilon}^{(n)}) > 1 - \varepsilon \]
     が成立する．すなわち，$n$を大きくすることで，シンボル列が典型列である確率をいくらでも$1$に近づけることができる．
@@ -329,7 +330,7 @@
           + \sum_{x^n \in (A_{\varepsilon}^{(n)})^c} \tilde{p}(x^n) (\lfloor nr \rfloor + 2) \Bigg \rparen \\
       &= \frac{1}{n} \big \lparen P_{X^n}(A_{\varepsilon}^{(n)})  (\lfloor nr \rfloor + 1) 
         + P_{X^n}((A_{\varepsilon}^{(n)})^c) \rparen (\lfloor nr \rfloor + 2) \big \rparen \\
-        &\leq \frac{1}{n} \left \lparen (1-\varepsilon) \cdot (\lfloor nr \rfloor + 1)  + \varepsilon (\lfloor nr \rfloor + 2)   \right \rparen \quad \because 2 
+      &\leq \frac{1}{n} \left \lparen 1 \cdot (\lfloor nr \rfloor + 1)  + \varepsilon (\lfloor nr \rfloor + 2)   \right \rparen \quad \because 2 
     \end{align*}
     \let\qedsymbol\relax
   \end{proof}
@@ -338,9 +339,9 @@
 \begin{frame}\frametitle{情報源符号化定理の証明}
   \begin{proof}[証明]
     \begin{align*}
-      &= \frac{\lfloor nr \rfloor}{n} + \frac{1}{n} + \frac{\varepsilon}{n} \\
-      &\leq r + \frac{1}{n} + \frac{\varepsilon}{n} \quad \because \lfloor nr \rfloor \leq nr \\
-      &\leq r + \varepsilon^{\prime} \quad \left \lparen \varepsilon^{\prime} \coloneq \frac{1}{n} + \frac{\varepsilon}{n} \right \rparen
+      &= \frac{\lfloor nr \rfloor}{n} + \frac{1}{n} + \frac{\varepsilon \lfloor nr \rfloor}{n} + \frac{2 \varepsilon}{n} \\
+      &\leq r + r \varepsilon + \frac{1}{n} + \frac{2\varepsilon}{n} \quad \because \lfloor nr \rfloor \leq nr \\
+      &\leq r + \varepsilon^{\prime} \quad \left \lparen \varepsilon^{\prime} \coloneq r \varepsilon + \frac{1}{n} + \frac{2\varepsilon}{n} \right \rparen
     \end{align*}
     ここで，小さい$\varepsilon$を取ったあとに，十分大きな$n$を取ることで，任意に$\varepsilon^{\prime}$を小さくできる．
     よって，$n \to \infty$の極限で$R = r$
